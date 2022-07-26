@@ -82,3 +82,43 @@ for loop output some
 'title': 'Fall Guys with '
             'viewers round',
 'updatedForIndicatorAt': '2022-06-26T15:07:00.635269788Z'},
+
+
+
+
+
+
+
+
+
+
+
+
+-----------
+
+
+
+
+
+
+
+Message: '+12 → Streamer(username=waldoandfriends, channel_id=140918389, channel_points=8.55k) - Reason: WATCH.'
+Arguments: None
+{'message': '{"type":"viewcount","server_time":1658870490.164544,"viewers":7}',
+ 'topic': 'video-playback-by-id.140918389'}
+26/07/22 23:21:30 - INFO - [on_message]: Poggers!
+{'message': '{"type":"viewcount","server_time":1658870520.248006,"viewers":7}',
+ 'topic': 'video-playback-by-id.140918389'}
+26/07/22 23:22:00 - INFO - [on_message]: Poggers!
+{'message': '{"type":"viewcount","server_time":1658870550.262936,"viewers":7}',
+ 'topic': 'video-playback-by-id.140918389'}
+26/07/22 23:22:30 - INFO - [on_message]: Poggers!
+{'message': '{"type":"global-last-viewed-content-updated","data":{"timestamp":"2022-07-26T21:22:43.169452147Z","global_last_viewed_content":{"user_id":"158691158","last_viewed_content":[{"content_type":"AUTOMATIC_REWARD","content_id":"SINGLE_MESSAGE_BYPASS_SUB_MODE","last_viewed_at":"2022-01-07T17:23:00.398067354Z"},{"content_type":"AUTOMATIC_REWARD","content_id":"SEND_HIGHLIGHTED_MESSAGE","last_viewed_at":"2022-07-26T17:09:16.492080207Z"},{"content_type":"AUTOMATIC_REWARD","content_id":"RANDOM_SUB_EMOTE_UNLOCK","last_viewed_at":"2022-01-07T17:23:00.398067354Z"},{"content_type":"AUTOMATIC_REWARD","content_id":"CHOSEN_SUB_EMOTE_UNLOCK","last_viewed_at":"2022-07-26T17:09:16.492080207Z"},{"content_type":"AUTOMATIC_REWARD","content_id":"CHOSEN_MODIFIED_SUB_EMOTE_UNLOCK","last_viewed_at":"2022-07-26T17:09:16.492080207Z"}]}}}',
+ 'topic': 'community-points-user-v1.158691158'}
+26/07/22 23:22:43 - INFO - [on_message]: Poggers!
+{'message': '{"type":"channel-last-viewed-content-updated","data":{"timestamp":"2022-07-26T21:22:43.169452147Z","channel_last_viewed_content":{"user_id":"158691158","channel_id":"140918389","last_viewed_content":[{"content_type":"AUTOMATIC_REWARD","last_viewed_at":"2022-07-26T21:22:43.161843855Z"},{"content_type":"CUSTOM_REWARD","last_viewed_at":"2022-07-26T21:22:43.161843855Z"}]}}}',
+ 'topic': 'community-points-user-v1.158691158'}
+26/07/22 23:22:43 - INFO - [on_message]: Poggers!
+{'message': '{"type":"viewcount","server_time":1658870580.255973,"viewers":7}',
+ 'topic': 'video-playback-by-id.140918389'}
+26/07/22 23:23:00 - INFO - [on_message]: Poggers!

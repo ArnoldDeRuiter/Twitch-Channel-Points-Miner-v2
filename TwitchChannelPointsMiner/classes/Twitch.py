@@ -428,22 +428,18 @@ class Twitch(object):
             pprint(channel["communityPointsSettings"]["customRewards"])
 
 
-            for x in channelCustomRewards:
-                if x["id"] == "d061dd74-166d-40f1-bf68-d82244bc59be":
-                    pprint(x) 
-                    #self.redeem_custom_channel_reward(streamer, x["id"])
+            for channelReward in channelCustomRewards:
+                if (channelReward["title"].__contains__("Catch the")):
+                    pprint(channelReward)
+                    self.redeem_custom_channel_reward(streamer, channelReward["id"])
                     logger.info(
                         f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
                     )
-                    pprint(GQLOperations.RedeemCustomChannelReward);
+                    #pprint(GQLOperations.RedeemCustomReward);
+                    
                     logger.info(
                         f"Poggers22223333333333333333!"
                     )
-
-
-
-
-            # id:d061dd74-166d-40f1-bf68-d82244bc59be
             
             logger.info(
                 f"WWWOOOOOOWWWWWWWWWWWWW123123!"
@@ -460,14 +456,23 @@ class Twitch(object):
     def redeem_custom_channel_reward(self, streamer, reward_id):
         if Settings.logger.less is False:
             logger.info(
-                f"Claiming the bonus for {streamer}!",
-                extra={"emoji": ":gift:", "event": Events.BONUS_CLAIM},
+                f"Claiming the Reward for {streamer}!",
+                extra={"emoji": ":basketball:", "event": Events.REDEEM_REWARD},
             )
 
-        json_data = copy.deepcopy(GQLOperations.ClaimCommunityPoints)
+        json_data = copy.deepcopy(GQLOperations.RedeemCustomReward)
         json_data["variables"] = {
-            "input": {"channelID": streamer.channel_id, "rewardID": reward_id}
+        #    "input": {"channelID": streamer.channel_id, "rewardID": reward_id}
+        "input": { 
+                "channelID": streamer.channel_id,
+                #"cost": 50,
+                #"prompt": null,
+                "rewardID": reward_id,
+                #"title": "Bonk",
+                #"transactionID": "5f08231c8c53492f89df067004f187b5"
+            }
         }
+            
         self.post_gql_request(json_data)
 
 

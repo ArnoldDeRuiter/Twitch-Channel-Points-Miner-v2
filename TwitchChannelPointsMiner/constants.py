@@ -55,16 +55,16 @@ class GQLOperations:
     }
     RedeemCustomReward = {
         "operationName": "RedeemCustomReward",
-        "variables": {
-            "input": { 
-                "channelID": "140918389",
-                "cost": 50,
-                "prompt": null,
-                "rewardID": "b77b4074-b9f7-4386-a79e-d6fa19c73e4e",
-                "title": "Bonk",
-                "transactionID": "5f08231c8c53492f89df067004f187b5"
-            }
-        },
+#        "variables": {
+#            "input": { 
+#                "channelID": "140918389",
+#                "cost": 50,
+#                "prompt": null,
+#                "rewardID": "b77b4074-b9f7-4386-a79e-d6fa19c73e4e",
+#                "title": "Bonk",
+#                "transactionID": "5f08231c8c53492f89df067004f187b5"
+#            }
+#        },
         "extensions": {
             "persistedQuery": {
                 "version": 1,
