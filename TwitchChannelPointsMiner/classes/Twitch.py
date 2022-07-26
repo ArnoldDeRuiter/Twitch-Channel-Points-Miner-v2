@@ -418,14 +418,21 @@ class Twitch(object):
 
         response = self.post_gql_request(json_data)
         if response != {}:
-            if response["data"]["community"] is None:
-                raise StreamerDoesNotExistException
+            # This if response is None just check for Offline channels... The thing is, we don't care if it's "offline".
+            # if response["data"]["community"] is None:
+            #     raise StreamerDoesNotExistException
             channel = response["data"]["community"]["channel"]
 
             
-            #pprint(channel["self"]) #["CommunityPointsChannelSettings"])
+            channelCustomRewards = channel["communityPointsSettings"]["customRewards"]
             pprint(channel["communityPointsSettings"]["customRewards"])
-            #["communityPointsSettings"]["CommunityPointsChannelSettings"]["customRewards"])
+
+
+            for x in channelCustomRewards:
+                print(x) 
+
+            # id:d061dd74-166d-40f1-bf68-d82244bc59be
+            
             logger.info(
                 f"Poggers22223333333333333333!"
             )

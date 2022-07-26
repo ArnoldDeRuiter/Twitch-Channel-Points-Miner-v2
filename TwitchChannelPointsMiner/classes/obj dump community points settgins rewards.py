@@ -1,3 +1,11 @@
+----
+for loop output some
+{'id': '514e7f8f-017b-4f5e-b88f-7c26490d0e73', 'backgroundColor': '#EFB700', 'cooldownExpiresAt': None, 'cost': 2500, 'defaultImage': {'url': 'https://static-cdn.jtvnw.net/custom-reward-images/default-1.png', 'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-2.png', 'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png', '__typename': 'CommunityPointsImage'}, 'image': {'url': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/514e7f8f-017b-4f5e-b88f-7c26490d0e73/39fa8529-063f-41a2-8290-f24853deef99/custom-1.png', 'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/514e7f8f-017b-4f5e-b88f-7c26490d0e73/39fa8529-063f-41a2-8290-f24853deef99/custom-2.png', 'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/514e7f8f-017b-4f5e-b88f-7c26490d0e73/39fa8529-063f-41a2-8290-f24853deef99/custom-4.png', '__typename': 'CommunityPointsImage'}, 'maxPerStreamSetting': {'isEnabled': False, 'maxPerStream': 0, '__typename': 'CommunityPointsCustomRewardMaxPerStreamSetting'}, 'maxPerUserPerStreamSetting': {'isEnabled': False, 'maxPerUserPerStream': 0, '__typename': 'CommunityPointsCustomRewardMaxPerUserPerStreamSetting'}, 'globalCooldownSetting': {'isEnabled': True, 'globalCooldownSeconds': 60, '__typename': 'CommunityPointsCustomRewardGlobalCooldownSetting'}, 'isEnabled': True, 'isInStock': True, 'isPaused': False, 'isSubOnly': False, 'isUserInputRequired': False, 'shouldRedemptionsSkipRequestQueue': True, 'redemptionsRedeemedCurrentStream': None, 'prompt': "It's either a tasty treat or a disgusting punishment. If you're out of Friend Points: also automatically redeemed upon subscriptions!", 'title': "It's Bean Time!", 'updatedForIndicatorAt': '2022-06-07T16:40:00.027951858Z', '__typename': 'CommunityPointsCustomReward'}
+
+{'id': 'd061dd74-166d-40f1-bf68-d82244bc59be', 'backgroundColor': '#EFB700', 'cooldownExpiresAt': None, 'cost': 151, 'defaultImage': {'url': 'https://static-cdn.jtvnw.net/custom-reward-images/default-1.png', 'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-2.png', 'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png', '__typename': 'CommunityPointsImage'}, 'image': {'url': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/d061dd74-166d-40f1-bf68-d82244bc59be/a3de5bdb-4360-4a12-beca-599e05ee90cd/custom-1.png', 'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/d061dd74-166d-40f1-bf68-d82244bc59be/a3de5bdb-4360-4a12-beca-599e05ee90cd/custom-2.png', 'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/d061dd74-166d-40f1-bf68-d82244bc59be/a3de5bdb-4360-4a12-beca-599e05ee90cd/custom-4.png', '__typename': 'CommunityPointsImage'}, 'maxPerStreamSetting': {'isEnabled': False, 'maxPerStream': 0, '__typename': 'CommunityPointsCustomRewardMaxPerStreamSetting'}, 'maxPerUserPerStreamSetting': {'isEnabled': False, 'maxPerUserPerStream': 0, '__typename': 'CommunityPointsCustomRewardMaxPerUserPerStreamSetting'}, 'globalCooldownSetting': {'isEnabled': True, 'globalCooldownSeconds': 5, '__typename': 'CommunityPointsCustomRewardGlobalCooldownSetting'}, 'isEnabled': True, 'isInStock': True, 'isPaused': True, 'isSubOnly': False, 'isUserInputRequired': False, 'shouldRedemptionsSkipRequestQueue': False, 'redemptionsRedeemedCurrentStream': None, 'prompt': 'When a Pokémon apprears on the screen you can use this reward to try and catch it!', 'title': 'Catch the Pokémon!', 'updatedForIndicatorAt': '2022-07-23T10:48:45.567285246Z', '__typename': 'CommunityPointsCustomReward'}
+----
+
+
 {'__typename': 'Channel',
  'communityPointsSettings': 
 
@@ -6,7 +14,7 @@
                         'backgroundColor': None,
 
  //CommunityPointsAutomaticReward
- 
+
 'customRewards': 
     [{'__typename': 'CommunityPointsCustomReward',
     
