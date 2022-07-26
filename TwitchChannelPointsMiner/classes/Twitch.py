@@ -12,6 +12,7 @@ import re
 import time
 from pathlib import Path
 from secrets import token_hex
+from pprint import pprint
 
 import requests
 
@@ -420,6 +421,15 @@ class Twitch(object):
             if response["data"]["community"] is None:
                 raise StreamerDoesNotExistException
             channel = response["data"]["community"]["channel"]
+
+            
+            #pprint(channel["self"]) #["CommunityPointsChannelSettings"])
+            pprint(channel["communityPointsSettings"]["customRewards"])
+            #["communityPointsSettings"]["CommunityPointsChannelSettings"]["customRewards"])
+            logger.info(
+                f"Poggers22223333333333333333!"
+            )
+
             community_points = channel["self"]["communityPoints"]
             streamer.channel_points = community_points["balance"]
             streamer.activeMultipliers = community_points["activeMultipliers"]

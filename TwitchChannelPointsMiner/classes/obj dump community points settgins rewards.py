@@ -1,0 +1,76 @@
+{'__typename': 'Channel',
+ 'communityPointsSettings': 
+
+    {'__typename': 'CommunityPointsChannelSettings',
+    'automaticRewards': [{'__typename': 'CommunityPointsAutomaticReward',
+                        'backgroundColor': None,
+
+ //CommunityPointsAutomaticReward
+ 
+'customRewards': 
+    [{'__typename': 'CommunityPointsCustomReward',
+    
+'backgroundColor': '#FE295C',
+'cooldownExpiresAt': None,
+'cost': 200000,
+'defaultImage': {'__typename': 'CommunityPointsImage',
+                    'url': 'https://static-cdn.jtvnw.net/custom-reward-images/default-1.png',
+                    'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-2.png',
+                    'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png'},
+'globalCooldownSetting': {'__typename': 'CommunityPointsCustomRewardGlobalCooldownSetting',
+                            'globalCooldownSeconds': 60,
+                            'isEnabled': False},
+'id': '34a25ae4-4f4d-4b67-8e36-8a8cd2f8025a',
+'image': None,
+'isEnabled': True,
+'isInStock': True,
+'isPaused': False,
+'isSubOnly': False,
+'isUserInputRequired': False,
+'maxPerStreamSetting': {'__typename': 'CommunityPointsCustomRewardMaxPerStreamSetting',
+                        'isEnabled': False,
+                        'maxPerStream': 100},
+'maxPerUserPerStreamSetting': {'__typename': 'CommunityPointsCustomRewardMaxPerUserPerStreamSetting',
+                                'isEnabled': False,
+                                'maxPerUserPerStream': 5},
+'prompt': 'Powered by Blerp - '
+            'https://blerp.com/soundbites/5d014c83531c0d0006227f03',
+'redemptionsRedeemedCurrentStream': None,
+'shouldRedemptionsSkipRequestQueue': False,
+'title': 'You are not very '
+            'good',
+'updatedForIndicatorAt': '2022-06-22T23:07:53.937710584Z'},
+
+
+{'__typename': 'CommunityPointsCustomReward',
+'backgroundColor': '#AE1392',
+'cooldownExpiresAt': None,
+'cost': 10000000,
+'defaultImage': {'__typename': 'CommunityPointsImage',
+                    'url': 'https://static-cdn.jtvnw.net/custom-reward-images/default-1.png',
+                    'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-2.png',
+                    'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png'},
+'globalCooldownSetting': {'__typename': 'CommunityPointsCustomRewardGlobalCooldownSetting',
+                            'globalCooldownSeconds': 0,
+                            'isEnabled': False},
+'id': '38cea247-1e53-4e92-ab9e-5235f8def510',
+'image': None,
+'isEnabled': True,
+'isInStock': True,
+'isPaused': False,
+'isSubOnly': False,
+'isUserInputRequired': False,
+'maxPerStreamSetting': {'__typename': 'CommunityPointsCustomRewardMaxPerStreamSetting',
+                        'isEnabled': False,
+                        'maxPerStream': 0},
+'maxPerUserPerStreamSetting': {'__typename': 'CommunityPointsCustomRewardMaxPerUserPerStreamSetting',
+                                'isEnabled': False,
+                                'maxPerUserPerStream': 0},
+'prompt': "We'll do a round of "
+            'fall guys with a '
+            'viewer lobby',
+'redemptionsRedeemedCurrentStream': None,
+'shouldRedemptionsSkipRequestQueue': False,
+'title': 'Fall Guys with '
+            'viewers round',
+'updatedForIndicatorAt': '2022-06-26T15:07:00.635269788Z'},

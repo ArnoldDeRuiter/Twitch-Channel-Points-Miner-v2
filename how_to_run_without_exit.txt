@@ -1,0 +1,2 @@
+docker run -tid -t --name='TwitchMiner' --net='bridge' -e TZ="Europe/Berlin" -p '5008:5000/tcp' -v '/mnt/user/appdata/twitchminerv2/analytics':'/usr/src/app/analytics':'rw' -v '/mnt/user/appdata/twitchminerv2/cookies':'/usr/src/app/cookies':'rw' -v '/mnt/user/appdata/twitchminerv2/cookies':'/usr/src/app/logs':'rw' -v '/mnt/user/appdata/twitchminerv2/run.py':'/usr/src/app/run.py':'ro' 'tkdalex/twitch-channel-points-miner-v2' sleep infinity tail -f /dev/null
+

@@ -2,6 +2,7 @@ import json
 import logging
 import random
 import time
+from pprint import pprint
 from threading import Thread, Timer
 
 from dateutil import parser
@@ -156,6 +157,10 @@ class WebSocketsPool:
 
         if response["type"] == "MESSAGE":
             # We should create a Message class ...
+            pprint(response["data"])
+            logger.info(
+                f"Poggers!"
+            )
             message = Message(response["data"])
 
             # If we have more than one PubSub connection, messages may be duplicated
