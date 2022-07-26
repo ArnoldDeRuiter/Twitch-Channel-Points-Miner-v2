@@ -429,12 +429,24 @@ class Twitch(object):
 
 
             for x in channelCustomRewards:
-                print(x) 
+                if x["id"] == "d061dd74-166d-40f1-bf68-d82244bc59be":
+                    pprint(x) 
+                    #self.redeem_custom_channel_reward(streamer, x["id"])
+                    logger.info(
+                        f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
+                    )
+                    pprint(GQLOperations.RedeemCustomChannelReward);
+                    logger.info(
+                        f"Poggers22223333333333333333!"
+                    )
+
+
+
 
             # id:d061dd74-166d-40f1-bf68-d82244bc59be
             
             logger.info(
-                f"Poggers22223333333333333333!"
+                f"WWWOOOOOOWWWWWWWWWWWWW123123!"
             )
 
             community_points = channel["self"]["communityPoints"]
@@ -443,6 +455,22 @@ class Twitch(object):
 
             if community_points["availableClaim"] is not None:
                 self.claim_bonus(streamer, community_points["availableClaim"]["id"])
+
+
+    def redeem_custom_channel_reward(self, streamer, reward_id):
+        if Settings.logger.less is False:
+            logger.info(
+                f"Claiming the bonus for {streamer}!",
+                extra={"emoji": ":gift:", "event": Events.BONUS_CLAIM},
+            )
+
+        json_data = copy.deepcopy(GQLOperations.ClaimCommunityPoints)
+        json_data["variables"] = {
+            "input": {"channelID": streamer.channel_id, "rewardID": reward_id}
+        }
+        self.post_gql_request(json_data)
+
+
 
     def make_predictions(self, event):
         decision = event.bet.calculate(event.streamer.channel_points)

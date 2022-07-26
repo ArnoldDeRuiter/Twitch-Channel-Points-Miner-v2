@@ -1,4 +1,4 @@
-# Twitch endpoints
+# Twitch endpoints https://dev.twitch.tv/docs/pubsub https://www.scien.cx/2021/10/23/graphql-in-production-analyzing-public-graphql-apis-1-twitch-tv/
 URL = "https://www.twitch.tv"
 IRC = "irc.chat.twitch.tv"
 IRC_PORT = 6667
@@ -52,6 +52,30 @@ class GQLOperations:
                 "sha256Hash": "46aaeebe02c99afdf4fc97c7c0cba964124bf6b0af229395f1f6d1feed05b3d0",
             }
         },
+    }
+    RedeemCustomReward = {
+        "operationName": "RedeemCustomReward",
+        "variables": {
+            "input": { 
+                "channelID": "140918389",
+                "cost": 50,
+                "prompt": null,
+                "rewardID": "b77b4074-b9f7-4386-a79e-d6fa19c73e4e",
+                "title": "Bonk",
+                "transactionID": "5f08231c8c53492f89df067004f187b5"
+            }
+        },
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "d56249a7adb4978898ea3412e196688d4ac3cea1c0c2dfd65561d229ea5dcc42"
+            }
+        },
+        #  json_data.append(copy.deepcopy(GQLOperations.DropCampaignDetails))
+        #    json_data[-1]["variables"] = {
+        #        "dropID": campaign["id"],
+        #        "channelLogin": f"{self.twitch_login.get_user_id()}",
+        #    }
     }
     DropsPage_ClaimDropRewards = {
         "operationName": "DropsPage_ClaimDropRewards",
