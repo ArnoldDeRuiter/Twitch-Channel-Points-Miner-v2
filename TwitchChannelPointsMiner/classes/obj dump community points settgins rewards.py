@@ -1,3 +1,124 @@
+
+
+***********
+
+
+
+[{"operationName":"UpdateCommunityPointsLastViewedContent","variables":{"input":{"channelID":"140918389","viewedContent":["AUTOMATIC_REWARD","CUSTOM_REWARD"]}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"ae490fa8c1c284f6da9e43f0e7b6418100d887de8dd62ef2a08e320b8b75c1cf"}}}]
+
+
+https://gql.twitch.tv/gql#origin=twilight
+
+*/*/*/
+
+
+https://gql.twitch.tv/gql#origin=twilight
+
+
+[{"operationName":"RedeemCustomReward","variables":{"input":{"channelID":"140918389","cost":151,"prompt":"A wild Snubbull appeared on the screen, try and catch it!","rewardID":"d061dd74-166d-40f1-bf68-d82244bc59be","title":"Catch the Snubbull!","transactionID":"79a47c8421f4a75e9378e8f5aa2fefe0"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"d56249a7adb4978898ea3412e196688d4ac3cea1c0c2dfd65561d229ea5dcc42"}}}]
+
+
+curl 'https://gql.twitch.tv/gql#origin=twilight' -X POST -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0' -H 'Accept: */*' -H 'Accept-Language: en-US' -H 'Accept-Encoding: gzip, deflate, br' -H 'Referer: https://www.twitch.tv/' -H 'Client-Id: kimne78kx3ncx6brgo4mv6wki5h1ko' -H 'X-Device-Id: 597203908bf58592' -H 'Client-Version: 1ad44d1e-7760-485b-b2c0-4dc85ac42995' -H 'Client-Session-Id: 4418d555614d425e' -H 'Authorization: OAuth wqbf1tojzliqlnd9po7opdgpu1ju9v' -H 'Content-Type: text/plain;charset=UTF-8' -H 'Origin: https://www.twitch.tv' -H 'DNT: 1' -H 'Connection: keep-alive' -H 'Sec-Fetch-Dest: empty' -H 'Sec-Fetch-Mode: cors' -H 'Sec-Fetch-Site: same-site' -H 'Sec-GPC: 1' --data-raw '[{"operationName":"RedeemCustomReward","variables":{"input":{"channelID":"140918389","cost":151,"prompt":"A wild Snubbull appeared on the screen, try and catch it!","rewardID":"d061dd74-166d-40f1-bf68-d82244bc59be","title":"Catch the Snubbull!","transactionID":"79a47c8421f4a75e9378e8f5aa2fefe0"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"d56249a7adb4978898ea3412e196688d4ac3cea1c0c2dfd65561d229ea5dcc42"}}}]'
+
+
+
+==================================
+
+
+
+https://gql.twitch.tv/gql#origin=twilight
+
+
+[{"operationName":"RedeemCustomReward","variables":{"input":{"channelID":"140918389","cost":151,"prompt":"A wild Cubone appeared on the screen, try and catch it!","rewardID":"d061dd74-166d-40f1-bf68-d82244bc59be","title":"Catch the Cubone!","transactionID":"7d0bb11221a6b77cec2ddd5c0d90915a"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"d56249a7adb4978898ea3412e196688d4ac3cea1c0c2dfd65561d229ea5dcc42"}}}]
+
+
+POST /gql HTTP/1.1
+Host: gql.twitch.tv
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: */*
+Accept-Language: en-US
+Accept-Encoding: gzip, deflate, br
+Referer: https://www.twitch.tv/
+Client-Id: kimne78kx3ncx6brgo4mv6wki5h1ko
+X-Device-Id: 597203908bf58592
+Client-Version: 1ad44d1e-7760-485b-b2c0-4dc85ac42995
+Client-Session-Id: 4418d555614d425e
+Authorization: OAuth wqbf1tojzliqlnd9po7opdgpu1ju9v
+Content-Type: text/plain;charset=UTF-8
+Origin: https://www.twitch.tv
+Content-Length: 421
+DNT: 1
+Connection: keep-alive
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+Sec-GPC: 1
+
+
+curl 'https://gql.twitch.tv/gql#origin=twilight' -X POST -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0' -H 'Accept: */*' -H 'Accept-Language: en-US' -H 'Accept-Encoding: gzip, deflate, br' -H 'Referer: https://www.twitch.tv/' -H 'Client-Id: kimne78kx3ncx6brgo4mv6wki5h1ko' -H 'X-Device-Id: 597203908bf58592' -H 'Client-Version: 1ad44d1e-7760-485b-b2c0-4dc85ac42995' -H 'Client-Session-Id: 4418d555614d425e' -H 'Authorization: OAuth wqbf1tojzliqlnd9po7opdgpu1ju9v' -H 'Content-Type: text/plain;charset=UTF-8' -H 'Origin: https://www.twitch.tv' -H 'DNT: 1' -H 'Connection: keep-alive' -H 'Sec-Fetch-Dest: empty' -H 'Sec-Fetch-Mode: cors' -H 'Sec-Fetch-Site: same-site' -H 'Sec-GPC: 1' --data-raw '[{"operationName":"RedeemCustomReward","variables":{"input":{"channelID":"140918389","cost":151,"prompt":"A wild Cubone appeared on the screen, try and catch it!","rewardID":"d061dd74-166d-40f1-bf68-d82244bc59be","title":"Catch the Cubone!","transactionID":"7d0bb11221a6b77cec2ddd5c0d90915a"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"d56249a7adb4978898ea3412e196688d4ac3cea1c0c2dfd65561d229ea5dcc42"}}}]'
+
+
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 239
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+Date: Thu, 28 Jul 2022 20:24:53 GMT
+Timing-Allow-Origin: *
+
+
+await fetch("https://gql.twitch.tv/gql#origin=twilight", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0",
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Client-Id": "kimne78kx3ncx6brgo4mv6wki5h1ko",
+        "X-Device-Id": "597203908bf58592",
+        "Client-Version": "1ad44d1e-7760-485b-b2c0-4dc85ac42995",
+        "Client-Session-Id": "4418d555614d425e",
+        "Authorization": "OAuth wqbf1tojzliqlnd9po7opdgpu1ju9v",
+        "Content-Type": "text/plain;charset=UTF-8",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "Sec-GPC": "1"
+    },
+    "referrer": "https://www.twitch.tv/",
+    "body": "[{\"operationName\":\"RedeemCustomReward\",\"variables\":{\"input\":{\"channelID\":\"140918389\",\"cost\":151,\"prompt\":\"A wild Cubone appeared on the screen, try and catch it!\",\"rewardID\":\"d061dd74-166d-40f1-bf68-d82244bc59be\",\"title\":\"Catch the Cubone!\",\"transactionID\":\"7d0bb11221a6b77cec2ddd5c0d90915a\"}},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"d56249a7adb4978898ea3412e196688d4ac3cea1c0c2dfd65561d229ea5dcc42\"}}}]",
+    "method": "POST",
+    "mode": "cors"
+});
+
+
+
+[{"data":{"redeemCommunityPointsCustomReward":{"error":null,"__typename":"RedeemCommunityPointsCustomRewardPayload"}},"extensions":{"durationMilliseconds":141,"operationName":"RedeemCustomReward","requestID":"01G937QJ7MJHTJB7GA5DXK71MB"}}] 
+ 
+ =========================
+ 
+ json_data = copy.deepcopy(GQLOperations.ChannelPointsContext)
+        json_data["variables"] = {"channelLogin": streamer.username}
+
+        response = self.post_gql_request(json_data)
+        if response != {}:
+            # This if response is None just check for Offline channels... The thing is, we don't care if it's "offline".
+            # if response["data"]["community"] is None:
+            #     raise StreamerDoesNotExistException
+            channel = response["data"]["community"]["channel"]
+
+            channelCustomRewards = channel["communityPointsSettings"]["customRewards"]
+            pprint(channel["communityPointsSettings"]["customRewards"])
+
+            logger.info(
+                f"Poggers!22"
+            )
+            pprint(streamer)
+            for channelReward in channelCustomRewards:
+                pprint(channelReward["title"])
+                if (channelReward["title"].__contains__("Catch the")):
+                    pprint(channelReward)
+                    self.redeem_custom_channel_reward(streamer, channelReward["id"])
+
 ----
 for loop output some
 {'id': '514e7f8f-017b-4f5e-b88f-7c26490d0e73', 'backgroundColor': '#EFB700', 'cooldownExpiresAt': None, 'cost': 2500, 'defaultImage': {'url': 'https://static-cdn.jtvnw.net/custom-reward-images/default-1.png', 'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-2.png', 'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png', '__typename': 'CommunityPointsImage'}, 'image': {'url': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/514e7f8f-017b-4f5e-b88f-7c26490d0e73/39fa8529-063f-41a2-8290-f24853deef99/custom-1.png', 'url2x': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/514e7f8f-017b-4f5e-b88f-7c26490d0e73/39fa8529-063f-41a2-8290-f24853deef99/custom-2.png', 'url4x': 'https://static-cdn.jtvnw.net/custom-reward-images/140918389/514e7f8f-017b-4f5e-b88f-7c26490d0e73/39fa8529-063f-41a2-8290-f24853deef99/custom-4.png', '__typename': 'CommunityPointsImage'}, 'maxPerStreamSetting': {'isEnabled': False, 'maxPerStream': 0, '__typename': 'CommunityPointsCustomRewardMaxPerStreamSetting'}, 'maxPerUserPerStreamSetting': {'isEnabled': False, 'maxPerUserPerStream': 0, '__typename': 'CommunityPointsCustomRewardMaxPerUserPerStreamSetting'}, 'globalCooldownSetting': {'isEnabled': True, 'globalCooldownSeconds': 60, '__typename': 'CommunityPointsCustomRewardGlobalCooldownSetting'}, 'isEnabled': True, 'isInStock': True, 'isPaused': False, 'isSubOnly': False, 'isUserInputRequired': False, 'shouldRedemptionsSkipRequestQueue': True, 'redemptionsRedeemedCurrentStream': None, 'prompt': "It's either a tasty treat or a disgusting punishment. If you're out of Friend Points: also automatically redeemed upon subscriptions!", 'title': "It's Bean Time!", 'updatedForIndicatorAt': '2022-06-07T16:40:00.027951858Z', '__typename': 'CommunityPointsCustomReward'}

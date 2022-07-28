@@ -8,6 +8,7 @@ import sys
 import threading
 import time
 import uuid
+from pprint import pprint
 from datetime import datetime
 from pathlib import Path
 
@@ -305,8 +306,10 @@ class TwitchChannelPointsMiner:
                     )
 
             refresh_context = time.time()
+            pprint("?????????????????????????????????????????????????????????????????????????????????????????????????????")
             while self.running:
-                time.sleep(random.uniform(20, 60))
+                # pprint("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
+                # time.sleep(random.uniform(20, 60))
                 # Do an external control for WebSocket. Check if the thread is running
                 # Check if is not None because maybe we have already created a new connection on array+1 and now index is None
                 for index in range(0, len(self.ws_pool.ws)):
@@ -316,17 +319,30 @@ class TwitchChannelPointsMiner:
                         and internet_connection_available() is True
                     ):
                         logger.info(
-                            f"#{index} - The last PING was sent more than 10 minutes ago. Reconnecting to the WebSocket..."
+                            f"#{index} - The last PING was sJustent more than 10 minutes ago. Reconnecting to the WebSocket..."
                         )
                         WebSocketsPool.handle_reconnection(self.ws_pool.ws[index])
 
-                if ((time.time() - refresh_context) // 60) >= 30:
-                    refresh_context = time.time()
-                    for index in range(0, len(self.streamers)):
-                        if self.streamers[index].is_online:
-                            self.twitch.load_channel_points_context(
-                                self.streamers[index]
-                            )
+                # if ((time.time() - refresh_context) // 60) >= 2:
+                # refresh_context = time.time()
+                # pprint("----------------------------------------------------------------------------Hello?-----------------------------------------")
+                for index in range(0, len(self.streamers)):
+                    # pprint("========================================================================Yooo?==================================================")
+                    if self.streamers[index].is_online:
+                        self.twitch.load_channel_reward_context(
+                            self.streamers[index]
+                        )
+
+
+                # if ((time.time() - refresh_context) // 60) >= 30:
+                #     refresh_context = time.time()
+                #     for index in range(0, len(self.streamers)):
+                #         if self.streamers[index].is_online:
+                #             self.twitch.load_channel_points_context(
+                #                 self.streamers[index]
+                #             )
+
+
 
     def end(self, signum, frame):
         logger.info("CTRL+C Detected! Please wait just a moment!")

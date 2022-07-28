@@ -157,7 +157,7 @@ class WebSocketsPool:
 
         if response["type"] == "MESSAGE":
             # We should create a Message class ...
-            pprint(response["data"])
+            # pprint(response["data"])
             logger.info(
                 f"Poggers!"
             )

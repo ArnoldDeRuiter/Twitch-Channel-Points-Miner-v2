@@ -55,6 +55,9 @@ class GQLOperations:
     }
     RedeemCustomReward = {
         "operationName": "RedeemCustomReward",
+        "variables": {
+            "input": {}
+        },
 #        "variables": {
 #            "input": { 
 #                "channelID": "140918389",

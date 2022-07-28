@@ -410,6 +410,63 @@ class Twitch(object):
             except Exception:
                 logger.error("Exception raised in send minute watched", exc_info=True)
 
+    def load_channel_reward_context(self, streamer):
+        # pprint("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQAQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+        json_data = copy.deepcopy(GQLOperations.ChannelPointsContext)
+        json_data["variables"] = {"channelLogin": streamer.username}
+
+        response = self.post_gql_request(json_data)
+        if response != {}:
+            # This if response is None just check for Offline channels... The thing is, we don't care if it's "offline".
+            # if response["data"]["community"] is None:
+            #     raise StreamerDoesNotExistException
+            channel = response["data"]["community"]["channel"]
+
+            channelCustomRewards = channel["communityPointsSettings"]["customRewards"]
+            # pprint(channel["communityPointsSettings"]["customRewards"])
+            
+            # pprint("HEH")
+            
+            for channelReward in channelCustomRewards:
+                # pprint(channelReward)
+                if channelReward["title"].__contains__("Catch the"):
+                    pprint(channelReward)
+                        # if channelReward["id"].__contains__("d061dd74-166d-40f1-bf68-d82244bc59be") is not True:
+                    pprint("010101010101010100101010101010101010101010101010101010101001010101010101010101010101010101010101010101010101010101010!")
+                    self.redeem_custom_channel_reward(streamer, channelReward)
+                        # logger.info(
+                        #     f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
+                        # )
+                        #pprint(GQLOperations.RedeemCustomReward);
+
+    def redeem_custom_channel_reward(self, streamer, reward):
+        if Settings.logger.less is False:
+            pprint("HELLO BASKETBALL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            pprint(streamer.channel_id)
+            pprint(reward["id"])
+            # logger.info(
+            #     f"Claiming the Reward for {streamer}!",
+            #     extra={"emoji": ":basketball:", "event": Events.REDEEM_REWARD},
+            # )
+
+        json_data = copy.deepcopy(GQLOperations.RedeemCustomReward)
+        json_data["variables"] = {
+        #    "input": {"channelID": streamer.channel_id, "rewardID": reward_id}
+            "input": { 
+                "channelID": streamer.channel_id,
+                "cost": reward["cost"],
+                "prompt": reward["prompt"],
+                "rewardID": reward["id"],
+                "title": reward["title"],
+                "transactionID": token_hex(16),
+                #"transactionID": "5f08231c8c53492f89df067004f187b5"
+            }
+        }
+            
+        pprint(json_data)
+        self.post_gql_request(json_data)
+
+
     # === CHANNEL POINTS / PREDICTION === #
     # Load the amount of current points for a channel, check if a bonus is available
     def load_channel_points_context(self, streamer):
@@ -425,55 +482,28 @@ class Twitch(object):
 
             
             channelCustomRewards = channel["communityPointsSettings"]["customRewards"]
-            pprint(channel["communityPointsSettings"]["customRewards"])
+            # pprint(channel["communityPointsSettings"]["customRewards"])
 
 
             for channelReward in channelCustomRewards:
-                if (channelReward["title"].__contains__("Catch the")):
+                if channelReward["title"].__contains__("Catch the"):
+                    # if channelReward["id"].__contains__("d061dd74-166d-40f1-bf68-d82244bc59be") is not True:
                     pprint(channelReward)
                     self.redeem_custom_channel_reward(streamer, channelReward["id"])
-                    logger.info(
-                        f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
-                    )
-                    #pprint(GQLOperations.RedeemCustomReward);
-                    
-                    logger.info(
-                        f"Poggers22223333333333333333!"
-                    )
-            
-            logger.info(
-                f"WWWOOOOOOWWWWWWWWWWWWW123123!"
-            )
+                        # logger.info(
+                        #     f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
+                        # )
+                        #pprint(GQLOperations.RedeemCustomReward);
+                                    
+                community_points = channel["self"]["communityPoints"]
+                streamer.channel_points = community_points["balance"]
+                streamer.activeMultipliers = community_points["activeMultipliers"]
 
-            community_points = channel["self"]["communityPoints"]
-            streamer.channel_points = community_points["balance"]
-            streamer.activeMultipliers = community_points["activeMultipliers"]
-
-            if community_points["availableClaim"] is not None:
-                self.claim_bonus(streamer, community_points["availableClaim"]["id"])
+                if community_points["availableClaim"] is not None:
+                    self.claim_bonus(streamer, community_points["availableClaim"]["id"])
 
 
-    def redeem_custom_channel_reward(self, streamer, reward_id):
-        if Settings.logger.less is False:
-            logger.info(
-                f"Claiming the Reward for {streamer}!",
-                extra={"emoji": ":basketball:", "event": Events.REDEEM_REWARD},
-            )
 
-        json_data = copy.deepcopy(GQLOperations.RedeemCustomReward)
-        json_data["variables"] = {
-        #    "input": {"channelID": streamer.channel_id, "rewardID": reward_id}
-        "input": { 
-                "channelID": streamer.channel_id,
-                #"cost": 50,
-                #"prompt": null,
-                "rewardID": reward_id,
-                #"title": "Bonk",
-                #"transactionID": "5f08231c8c53492f89df067004f187b5"
-            }
-        }
-            
-        self.post_gql_request(json_data)
 
 
 
