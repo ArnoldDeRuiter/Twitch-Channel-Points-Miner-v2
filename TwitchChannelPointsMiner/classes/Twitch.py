@@ -489,7 +489,7 @@ class Twitch(object):
                 if channelReward["title"].__contains__("Catch the"):
                     # if channelReward["id"].__contains__("d061dd74-166d-40f1-bf68-d82244bc59be") is not True:
                     pprint(channelReward)
-                    self.redeem_custom_channel_reward(streamer, channelReward["id"])
+                    self.redeem_custom_channel_reward(streamer, channelReward)
                         # logger.info(
                         #     f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
                         # )
