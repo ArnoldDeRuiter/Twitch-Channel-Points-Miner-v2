@@ -41,10 +41,13 @@ logger = logging.getLogger(__name__)
 
 class Twitch(object):
     __slots__ = ["cookies_file", "user_agent", "twitch_login", "running"]
+    __catchSleep__ = 2
 
     def __init__(self, username, user_agent, password=None):
         cookies_path = os.path.join(Path().absolute(), "cookies")
         Path(cookies_path).mkdir(parents=True, exist_ok=True)
+        global __catchSleep__
+        __catchSleep__ = 2
         self.cookies_file = os.path.join(cookies_path, f"{username}.pkl")
         self.user_agent = user_agent
         self.twitch_login = TwitchLogin(
@@ -213,6 +216,13 @@ class Twitch(object):
             time.sleep(sleep_time)
             if self.running is False:
                 break
+
+    def __sleep_first_catch(self, seconds):
+        global __catchSleep__
+        if (seconds == 999):
+            return __catchSleep__
+        __catchSleep__ = seconds
+        return __catchSleep__
 
     def __check_connection_handler(self, chunk_size):
         # The success rate It's very hight usually. Why we have failed?
@@ -407,6 +417,7 @@ class Twitch(object):
 
                 if streamers_watching == []:
                     self.__chuncked_sleep(60, chunk_size=chunk_size)
+                    self.__sleep_first_catch(2)
             except Exception:
                 logger.error("Exception raised in send minute watched", exc_info=True)
 
@@ -429,11 +440,13 @@ class Twitch(object):
             
             for channelReward in channelCustomRewards:
                 # pprint(channelReward)
-                if channelReward["title"].__contains__("Catch the"):
+                if channelReward["title"].__contains__("Catch the") and not channelReward["title"].__contains__("Pokémon!") :
+                    
                     pprint(channelReward)
                         # if channelReward["id"].__contains__("d061dd74-166d-40f1-bf68-d82244bc59be") is not True:
                     pprint("010101010101010100101010101010101010101010101010101010101001010101010101010101010101010101010101010101010101010101010!")
                     self.redeem_custom_channel_reward(streamer, channelReward)
+                    self.__sleep_first_catch(0)
                         # logger.info(
                         #     f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
                         # )
@@ -441,6 +454,7 @@ class Twitch(object):
 
     def redeem_custom_channel_reward(self, streamer, reward):
         if Settings.logger.less is False:
+            time.sleep(self.__sleep_first_catch(999))
             pprint("HELLO BASKETBALL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             pprint(streamer.channel_id)
             pprint(reward["id"])
