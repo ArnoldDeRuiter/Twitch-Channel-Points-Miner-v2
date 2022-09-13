@@ -41,13 +41,13 @@ logger = logging.getLogger(__name__)
 
 class Twitch(object):
     __slots__ = ["cookies_file", "user_agent", "twitch_login", "running"]
-    __catchSleep__ = 2
+    __catchSleep__ = 4
 
     def __init__(self, username, user_agent, password=None):
         cookies_path = os.path.join(Path().absolute(), "cookies")
         Path(cookies_path).mkdir(parents=True, exist_ok=True)
         global __catchSleep__
-        __catchSleep__ = 2
+        __catchSleep__ = 4
         self.cookies_file = os.path.join(cookies_path, f"{username}.pkl")
         self.user_agent = user_agent
         self.twitch_login = TwitchLogin(
