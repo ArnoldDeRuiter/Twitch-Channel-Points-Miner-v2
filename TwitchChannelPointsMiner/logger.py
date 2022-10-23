@@ -105,15 +105,15 @@ class GlobalFormatter(logging.Formatter):
         record.emoji_is_present = (
             record.emoji_is_present if hasattr(record, "emoji_is_present") else False
         )
-        if (
-            hasattr(record, "emoji")
-            and self.settings.emoji is True
-            and record.emoji_is_present is False
-        ):
-            record.msg = emoji.emojize(
-                f"{record.emoji}  {record.msg.strip()}", use_aliases=True
-            )
-            record.emoji_is_present = True
+       # if (
+       #     hasattr(record, "emoji")
+       #     and self.settings.emoji is True
+       #     and record.emoji_is_present is False
+       # ):
+            #record.msg = emoji.emojize(
+            #    f"{record.emoji}  {record.msg.strip()}", use_aliases=True
+            #)
+            #record.emoji_is_present = True
 
         if self.settings.emoji is False:
             if "\u2192" in record.msg:
