@@ -59,13 +59,13 @@ class Twitch(object):
         "client_version",
         "twilight_build_id_pattern",
     ]
-    __catchSleep__ = 4
+    __catchSleep__ = 1
 
     def __init__(self, username, user_agent, password=None):
         cookies_path = os.path.join(Path().absolute(), "cookies")
         Path(cookies_path).mkdir(parents=True, exist_ok=True)
         global __catchSleep__
-        __catchSleep__ = 4
+        __catchSleep__ = 1
         self.cookies_file = os.path.join(cookies_path, f"{username}.pkl")
         self.user_agent = user_agent
         self.twitch_login = TwitchLogin(
@@ -527,8 +527,8 @@ class Twitch(object):
             for channelReward in channelCustomRewards:
                 # pprint(channelReward)
                 #pprint("Pokemon check!")
-                if channelReward["title"].__contains__("Catch the") and not channelReward["title"].__contains__("Pokémon!") :
-                    self.__sleep_first_catch(4)
+                if channelReward["title"].__contains__("Catch the") and channelReward["title"].__contains__("Pokémon!") :
+                    self.__sleep_first_catch(1)
                 if channelReward["title"].__contains__("Catch the") and not channelReward["title"].__contains__("Pokémon!") :
                 #if channelReward["title"].__contains__("Yaay") and not channelReward["title"].__contains__("Pokémon!") :
                     
