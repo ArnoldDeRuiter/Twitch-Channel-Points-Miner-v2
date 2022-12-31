@@ -527,21 +527,30 @@ class Twitch(object):
             for channelReward in channelCustomRewards:
                 # pprint(channelReward)
                 #pprint("Pokemon check!")
-                if channelReward["title"].__contains__("Catch the") and channelReward["title"].__contains__("Pokémon!") :
+                caughtList = ['Ivysaur', 'Venusaur', 'Charmander', 'Charizard', 'Caterpie', 'Metapod', 'Weedle', 'Pidgeotto', 'Fearow', 'Ekans', 'Arbok', 'Raichu', 'Nidoran♀', 'Nidorina', 'Nidoran♂', 'Nidorino', 'Clefairy', 'Vulpix', 'Jigglypuff', 'Wigglytuff', 'Zubat', 'Paras', 'Venonat', 'Venomoth', 'Dugtrio', 'Meowth', 'Psyduck', 'Primeape', 'Growlithe', 'Arcanine', 'Poliwrath', 'Abra', 'Alakazam', 'Machoke', 'Machamp', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Geodude', 'Doduo', 'Seel', 'Muk', 'Shellder', 'Cloyster', 'Gastly', 'Haunter', 'Gengar', 'Onix', 'Hypno', 'Krabby', 'Kingler', 'Voltorb', 'Exeggcute', 'Exeggutor', 'Cubone', 'Marowak', 'Hitmonlee', 'Hitmonchan', 'Lickitung', 'Weezing', 'Rhyhorn', 'Tangela', 'Kangaskhan', 'Horsea', 'Seadra', 'Seaking', 'Staryu', 'Starmie', 'Magmar', 'Pinsir', 'Tauros', 'Magikarp', 'Lapras', 'Ditto', 'Eevee', 'Vaporeon', 'Porygon', 'Omanyte', 'Kabutops', 'Moltres', 'Dratini', 'Dragonair', 'Bayleef', 'Meganium', 'Cyndaquil', 'Croconaw', 'Sentret', 'Noctowl', 'Ledyba', 'Spinarak', 'Chinchou', 'Lanturn', 'Pichu', 'Cleffa', 'Igglybuff', 'Xatu', 'Mareep', 'Flaaffy', 'Azumarill', 'Sudowoodo', 'Hoppip', 'Sunkern', 'Sunflora', 'Quagsire', 'Umbreon', 'Misdreavus', 'Unown', 'Wobbuffet', 'Girafarig', 'Forretress', 'Dunsparce', 'Snubbull', 'Granbull', 'Scizor', 'Shuckle', 'Heracross', 'Teddiursa', 'Slugma', 'Corsola', 'Mantine', 'Houndour', 'Houndoom', 'Phanpy', 'Donphan', 'Smeargle', 'Hitmontop', 'Smoochum', 'Elekid', 'Larvitar', 'Pupitar']
+                checkString = channelReward["title"]
+
+                if channelReward["title"].__contains__("Catch the") and channelReward["title"].__contains__("Pokémon!") and not (channelReward["title"].find(file) for file in caughtList):
+
                     self.__sleep_first_catch(1)
                 if channelReward["title"].__contains__("Catch the") and not channelReward["title"].__contains__("Pokémon!") :
                 #if channelReward["title"].__contains__("Yaay") and not channelReward["title"].__contains__("Pokémon!") :
                     
+                    if (any(s in channelReward["title"] for s in caughtList)):
+                        pprint("OLD Pokemon found!")
+                    else:
+                        pprint("NEW Pokemon found!")
+                        self.redeem_custom_channel_reward(streamer, channelReward)
+                        self.__sleep_first_catch(0)
+
                     #pprint(channelReward)
                         # if channelReward["id"].__contains__("d061dd74-166d-40f1-bf68-d82244bc59be") is not True:
                     #pprint("010101010101010100101010101010101010101010101010101010101001010101010101010101010101010101010101010101010101010101010!")
-                    pprint("Pokemon found!")
-                    self.redeem_custom_channel_reward(streamer, channelReward)
-                    self.__sleep_first_catch(0)
-                        # logger.info(
-                        #     f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
-                        # )
-                        #pprint(GQLOperations.RedeemCustomReward);
+                    
+                    # logger.info(
+                    #     f"QQQQQQQQQQQQQQQQQQQQQQQQQQQQ!"
+                    # )
+                    #pprint(GQLOperations.RedeemCustomReward);
 
     def redeem_custom_channel_reward(self, streamer, reward):
         if Settings.logger.less is False:
