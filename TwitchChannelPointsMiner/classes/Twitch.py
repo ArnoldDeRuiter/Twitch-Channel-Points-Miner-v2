@@ -16,6 +16,9 @@ from pathlib import Path
 from secrets import choice, token_hex
 from pprint import pprint
 
+import json
+from base64 import urlsafe_b64decode
+
 import requests
 
 from TwitchChannelPointsMiner.classes.entities.Campaign import Campaign
@@ -53,8 +56,8 @@ class Twitch(object):
         "twitch_login",
         "running",
         "device_id",
-        "integrity",
-        "integrity_expire",
+        # "integrity",
+        # "integrity_expire",
         "client_session",
         "client_version",
         "twilight_build_id_pattern",
@@ -68,15 +71,19 @@ class Twitch(object):
         __catchSleep__ = 3
         self.cookies_file = os.path.join(cookies_path, f"{username}.pkl")
         self.user_agent = user_agent
-        self.twitch_login = TwitchLogin(
-            CLIENT_ID, username, self.user_agent, password=password
-        )
-        self.running = True
+        # self.twitch_login = TwitchLogin(
+        #     CLIENT_ID, username, self.user_agent, password=password
+        # )
+        # self.running = True
         self.device_id = "".join(
             choice(string.ascii_letters + string.digits) for _ in range(32)
         )
-        self.integrity = None
-        self.integrity_expire = 0
+        self.twitch_login = TwitchLogin(
+            CLIENT_ID, self.device_id, username, self.user_agent, password=password
+        )
+        self.running = True
+        # self.integrity = None
+        # self.integrity_expire = 0
         self.client_session = token_hex(16)
         self.client_version = CLIENT_VERSION
         self.twilight_build_id_pattern = re.compile(
@@ -84,7 +91,7 @@ class Twitch(object):
         )
 
     def login(self):
-        if os.path.isfile(self.cookies_file) is False:
+        if not os.path.isfile(self.cookies_file):
             if self.twitch_login.login_flow():
                 self.twitch_login.save_cookies(self.cookies_file)
         else:
@@ -127,18 +134,26 @@ class Twitch(object):
 
     def get_spade_url(self, streamer):
         try:
-            headers = {"User-Agent": self.user_agent}
-            main_page_request = requests.get(streamer.streamer_url, headers=headers)
+            # fixes AttributeError: 'NoneType' object has no attribute 'group'
+            # headers = {"User-Agent": self.user_agent}
+            from TwitchChannelPointsMiner.constants import USER_AGENTS
+            headers = {"User-Agent": USER_AGENTS["Linux"]["FIREFOX"]}
+
+            main_page_request = requests.get(
+                streamer.streamer_url, headers=headers)
             response = main_page_request.text
+            # logger.info(response)
             regex_settings = "(https://static.twitchcdn.net/config/settings.*?js)"
             settings_url = re.search(regex_settings, response).group(1)
 
             settings_request = requests.get(settings_url, headers=headers)
             response = settings_request.text
             regex_spade = '"spade_url":"(.*?)"'
-            streamer.stream.spade_url = re.search(regex_spade, response).group(1)
+            streamer.stream.spade_url = re.search(
+                regex_spade, response).group(1)
         except requests.exceptions.RequestException as e:
-            logger.error(f"Something went wrong during extraction of 'spade_url': {e}")
+            logger.error(
+                f"Something went wrong during extraction of 'spade_url': {e}")
 
     def get_broadcast_id(self, streamer):
         json_data = copy.deepcopy(GQLOperations.WithIsStreamLiveQuery)
@@ -152,7 +167,8 @@ class Twitch(object):
                 raise StreamerIsOfflineException
 
     def get_stream_info(self, streamer):
-        json_data = copy.deepcopy(GQLOperations.VideoPlayerStreamInfoOverlayChannel)
+        json_data = copy.deepcopy(
+            GQLOperations.VideoPlayerStreamInfoOverlayChannel)
         json_data["variables"] = {"channel": streamer.username}
         response = self.post_gql_request(json_data)
         if response != {}:
@@ -224,7 +240,8 @@ class Twitch(object):
 
             logger.info(
                 f"Joining raid from {streamer} to {raid.target_login}!",
-                extra={"emoji": ":performing_arts:", "event": Events.JOIN_RAID},
+                extra={"emoji": ":performing_arts:",
+                       "event": Events.JOIN_RAID},
             )
 
     def viewer_is_mod(self, streamer):
@@ -270,7 +287,7 @@ class Twitch(object):
                 headers={
                     "Authorization": f"OAuth {self.twitch_login.get_auth_token()}",
                     "Client-Id": CLIENT_ID,
-                    "Client-Integrity": self.post_integrity(),
+                    # "Client-Integrity": self.post_integrity(),
                     "Client-Session-Id": self.client_session,
                     "Client-Version": self.update_client_version(),
                     "User-Agent": self.user_agent,
@@ -280,9 +297,6 @@ class Twitch(object):
             logger.debug(
                 f"Data: {json_data}, Status code: {response.status_code}, Content: {response.text}"
             )
-            #pprint(response.status_code)
-            #pprint(response.json())
-            
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(
@@ -293,7 +307,7 @@ class Twitch(object):
     # Request for Integrity Token
     # Twitch needs Authorization, Client-Id, X-Device-Id to generate JWT which is used for authorize gql requests
     # Regenerate Integrity Token 5 minutes before expire
-    def post_integrity(self):
+    """def post_integrity(self):
         if (
             self.integrity_expire - datetime.now().timestamp() * 1000 > 5 * 60 * 1000
             and self.integrity is not None
@@ -316,11 +330,35 @@ class Twitch(object):
                 f"Data: [], Status code: {response.status_code}, Content: {response.text}"
             )
             self.integrity = response.json().get("token", None)
+            # logger.info(f"integrity: {self.integrity}")
+
+            if self.isBadBot(self.integrity) is True:
+                logger.info(
+                    "Uh-oh, Twitch has detected this miner as a \"Bad Bot\". Don't worry.")
+
             self.integrity_expire = response.json().get("expiration", 0)
+            # logger.info(f"integrity_expire: {self.integrity_expire}")
             return self.integrity
         except requests.exceptions.RequestException as e:
             logger.error(f"Error with post_integrity: {e}")
             return self.integrity
+
+    # verify the integrity token's contents for the "is_bad_bot" flag
+    def isBadBot(self, integrity):
+        stripped_token: str = self.integrity.split('.')[2] + "=="
+        messy_json: str = urlsafe_b64decode(
+            stripped_token.encode()).decode(errors="ignore")
+        match = re.search(r'(.+)(?<="}).+$', messy_json)
+        if match is None:
+            # raise MinerException("Unable to parse the integrity token")
+            logger.info("Unable to parse the integrity token. Don't worry.")
+            return
+        decoded_header = json.loads(match.group(1))
+        # logger.info(f"decoded_header: {decoded_header}")
+        if decoded_header.get("is_bad_bot", "false") != "false":
+            return True
+        else:
+            return False"""
 
     def update_client_version(self):
         try:
@@ -367,11 +405,13 @@ class Twitch(object):
                         streamers_watching += streamers_index[:2]
 
                     elif (
-                        prior in [Priority.POINTS_ASCENDING, Priority.POINTS_DESCEDING]
+                        prior in [Priority.POINTS_ASCENDING,
+                                  Priority.POINTS_DESCEDING]
                         and len(streamers_watching) < 2
                     ):
                         items = [
-                            {"points": streamers[index].channel_points, "index": index}
+                            {"points": streamers[index].channel_points,
+                                "index": index}
                             for index in streamers_index
                         ]
                         items = sorted(
@@ -381,7 +421,8 @@ class Twitch(object):
                                 True if prior == Priority.POINTS_DESCEDING else False
                             ),
                         )
-                        streamers_watching += [item["index"] for item in items][:2]
+                        streamers_watching += [item["index"]
+                                               for item in items][:2]
 
                     elif prior == Priority.STREAK and len(streamers_watching) < 2:
                         """
@@ -397,7 +438,8 @@ class Twitch(object):
                                 and (
                                     streamers[index].offline_at == 0
                                     or (
-                                        (time.time() - streamers[index].offline_at)
+                                        (time.time() -
+                                         streamers[index].offline_at)
                                         // 60
                                     )
                                     > 30
@@ -423,7 +465,8 @@ class Twitch(object):
                         ]
                         streamers_with_multiplier = sorted(
                             streamers_with_multiplier,
-                            key=lambda x: streamers[x].total_points_multiplier(),
+                            key=lambda x: streamers[x].total_points_multiplier(
+                            ),
                             reverse=True,
                         )
                         streamers_watching += streamers_with_multiplier[:2]
@@ -492,10 +535,12 @@ class Twitch(object):
                                             )
 
                     except requests.exceptions.ConnectionError as e:
-                        logger.error(f"Error while trying to send minute watched: {e}")
+                        logger.error(
+                            f"Error while trying to send minute watched: {e}")
                         self.__check_connection_handler(chunk_size)
                     except requests.exceptions.Timeout as e:
-                        logger.error(f"Error while trying to send minute watched: {e}")
+                        logger.error(
+                            f"Error while trying to send minute watched: {e}")
 
                     self.__chuncked_sleep(
                         next_iteration - time.time(), chunk_size=chunk_size
@@ -503,9 +548,9 @@ class Twitch(object):
 
                 if streamers_watching == []:
                     self.__chuncked_sleep(60, chunk_size=chunk_size)
-                    #self.__sleep_first_catch(2)
             except Exception:
-                logger.error("Exception raised in send minute watched", exc_info=True)
+                logger.error(
+                    "Exception raised in send minute watched", exc_info=True)
 
     def load_channel_reward_context(self, streamer):
         # pprint("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQAQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
@@ -527,7 +572,7 @@ class Twitch(object):
             for channelReward in channelCustomRewards:
                 # pprint(channelReward)
                 #pprint("Pokemon check!")
-                caughtList = ['Ivysaur', 'Venusaur', 'Charmander', 'Charizard', 'Caterpie', 'Metapod', 'Weedle', 'Pidgeotto', 'Fearow', 'Ekans', 'Arbok', 'Raichu', 'Nidoran♀', 'Nidorina', 'Nidoran♂', 'Nidorino', 'Clefairy', 'Vulpix', 'Jigglypuff', 'Wigglytuff', 'Zubat', 'Paras', 'Venonat', 'Venomoth', 'Dugtrio', 'Meowth', 'Psyduck', 'Primeape', 'Growlithe', 'Arcanine', 'Poliwrath', 'Abra', 'Alakazam', 'Machoke', 'Machamp', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Geodude', 'Doduo', 'Seel', 'Muk', 'Shellder', 'Cloyster', 'Gastly', 'Haunter', 'Gengar', 'Onix', 'Hypno', 'Krabby', 'Kingler', 'Voltorb', 'Exeggcute', 'Exeggutor', 'Cubone', 'Marowak', 'Hitmonlee', 'Hitmonchan', 'Lickitung', 'Weezing', 'Rhyhorn', 'Tangela', 'Kangaskhan', 'Horsea', 'Seadra', 'Seaking', 'Staryu', 'Starmie', 'Magmar', 'Pinsir', 'Tauros', 'Magikarp', 'Lapras', 'Ditto', 'Eevee', 'Vaporeon', 'Porygon', 'Omanyte', 'Kabutops', 'Moltres', 'Dratini', 'Dragonair', 'Bayleef', 'Meganium', 'Cyndaquil', 'Croconaw', 'Sentret', 'Noctowl', 'Ledyba', 'Spinarak', 'Chinchou', 'Lanturn', 'Pichu', 'Cleffa', 'Igglybuff', 'Xatu', 'Mareep', 'Flaaffy', 'Azumarill', 'Sudowoodo', 'Hoppip', 'Sunkern', 'Sunflora', 'Quagsire', 'Umbreon', 'Misdreavus', 'Unown', 'Wobbuffet', 'Girafarig', 'Forretress', 'Dunsparce', 'Snubbull', 'Granbull', 'Scizor', 'Shuckle', 'Heracross', 'Teddiursa', 'Slugma', 'Corsola', 'Mantine', 'Houndour', 'Houndoom', 'Phanpy', 'Donphan', 'Smeargle', 'Hitmontop', 'Smoochum', 'Elekid', 'Larvitar', 'Pupitar', 'Aerodactyl']
+                caughtList = ['Ivysaur', 'Venusaur', 'Charmander', 'Charizard', 'Caterpie', 'Metapod', 'Weedle', 'Pidgeotto', 'Spearow', 'Fearow', 'Ekans', 'Arbok', 'Raichu', 'Nidoran♀', 'Nidorina', 'Nidoqueen', 'Nidoran♂', 'Nidorino', 'Clefairy', 'Vulpix', 'Ninetales', 'Jigglypuff', 'Wigglytuff', 'Zubat', 'Oddish', 'Paras', 'Venonat', 'Venomoth', 'Dugtrio', 'Meowth', 'Psyduck', 'Primeape', 'Growlithe', 'Arcanine', 'Poliwrath', 'Abra', 'Alakazam', 'Machop', 'Machoke', 'Machamp', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Tentacool', 'Geodude', 'Ponyta', 'Doduo', 'Seel', 'Muk', 'Shellder', 'Cloyster', 'Gastly', 'Haunter', 'Gengar', 'Onix', 'Hypno', 'Krabby', 'Kingler', 'Voltorb', 'Exeggcute', 'Exeggutor', 'Cubone', 'Marowak', 'Hitmonlee', 'Hitmonchan', 'Lickitung', 'Weezing', 'Rhyhorn', 'Tangela', 'Kangaskhan', 'Horsea', 'Seadra', 'Goldeen', 'Seaking', 'Staryu', 'Starmie', 'Magmar', 'Pinsir', 'Tauros', 'Magikarp', 'Lapras', 'Ditto', 'Eevee', 'Vaporeon', 'Porygon', 'Omanyte', 'Kabutops', 'Aerodactyl', 'Moltres', 'Dratini', 'Dragonair', 'Bayleef', 'Meganium', 'Cyndaquil', 'Totodile', 'Croconaw', 'Sentret', 'Noctowl', 'Ledyba', 'Spinarak', 'Chinchou', 'Lanturn', 'Pichu', 'Cleffa', 'Igglybuff', 'Xatu', 'Mareep', 'Flaaffy', 'Azumarill', 'Sudowoodo', 'Hoppip', 'Aipom', 'Sunkern', 'Sunflora', 'Wooper', 'Quagsire', 'Umbreon', 'Misdreavus', 'Unown', 'Wobbuffet', 'Girafarig', 'Forretress', 'Dunsparce', 'Snubbull', 'Granbull', 'Scizor', 'Shuckle', 'Heracross', 'Teddiursa', 'Slugma', 'Corsola', 'Remoraid', 'Delibird', 'Mantine', 'Houndour', 'Houndoom', 'Phanpy', 'Donphan', 'Smeargle', 'Hitmontop', 'Smoochum', 'Elekid', 'Larvitar', 'Pupitar']
                 checkString = channelReward["title"]
 
                 if channelReward["title"].__contains__("Catch the") and channelReward["title"].__contains__("Pokémon!") and not (channelReward["title"].find(file) for file in caughtList):
@@ -589,12 +634,11 @@ class Twitch(object):
 
         response = self.post_gql_request(json_data)
         if response != {}:
-            # This if response is None just check for Offline channels... The thing is, we don't care if it's "offline".
-            # if response["data"]["community"] is None:
-            #     raise StreamerDoesNotExistException
+            if response["data"]["community"] is None:
+                raise StreamerDoesNotExistException
             channel = response["data"]["community"]["channel"]
 
-            
+               
             channelCustomRewards = channel["communityPointsSettings"]["customRewards"]
             # pprint(channel["communityPointsSettings"]["customRewards"])
 
@@ -609,21 +653,17 @@ class Twitch(object):
                         # )
                         #pprint(GQLOperations.RedeemCustomReward);
                                     
-                community_points = channel["self"]["communityPoints"]
-                streamer.channel_points = community_points["balance"]
-                streamer.activeMultipliers = community_points["activeMultipliers"]
+            community_points = channel["self"]["communityPoints"]
+            streamer.channel_points = community_points["balance"]
+            streamer.activeMultipliers = community_points["activeMultipliers"]
 
-                if community_points["availableClaim"] is not None:
-                    self.claim_bonus(streamer, community_points["availableClaim"]["id"])
-
-
-
-
-
+            if community_points["availableClaim"] is not None:
+                self.claim_bonus(
+                    streamer, community_points["availableClaim"]["id"])
 
     def make_predictions(self, event):
         decision = event.bet.calculate(event.streamer.channel_points)
-        selector_index = 0 if decision["choice"] == "A" else 1
+        # selector_index = 0 if decision["choice"] == "A" else 1
 
         logger.info(
             f"Going to complete bet for {event}",
@@ -652,7 +692,8 @@ class Twitch(object):
             else:
                 if decision["amount"] >= 10:
                     logger.info(
-                        f"Place {_millify(decision['amount'])} channel points on: {event.bet.get_outcome(selector_index)}",
+                        # f"Place {_millify(decision['amount'])} channel points on: {event.bet.get_outcome(selector_index)}",
+                        f"Place {_millify(decision['amount'])} channel points on: {event.bet.get_outcome(decision['choice'])}",
                         extra={
                             "emoji": ":four_leaf_clover:",
                             "event": Events.BET_GENERAL,
@@ -715,7 +756,8 @@ class Twitch(object):
 
     # === CAMPAIGNS / DROPS / INVENTORY === #
     def __get_campaign_ids_from_streamer(self, streamer):
-        json_data = copy.deepcopy(GQLOperations.DropsHighlightService_AvailableDrops)
+        json_data = copy.deepcopy(
+            GQLOperations.DropsHighlightService_AvailableDrops)
         json_data["variables"] = {"channelID": streamer.channel_id}
         response = self.post_gql_request(json_data)
         try:
@@ -743,7 +785,8 @@ class Twitch(object):
         response = self.post_gql_request(GQLOperations.ViewerDropsDashboard)
         campaigns = response["data"]["currentUser"]["dropCampaigns"]
         if status is not None:
-            campaigns = list(filter(lambda x: x["status"] == status.upper(), campaigns))
+            campaigns = list(
+                filter(lambda x: x["status"] == status.upper(), campaigns))
         return campaigns
 
     def __get_campaigns_details(self, campaigns):
@@ -752,7 +795,8 @@ class Twitch(object):
         for chunk in chunks:
             json_data = []
             for campaign in chunk:
-                json_data.append(copy.deepcopy(GQLOperations.DropCampaignDetails))
+                json_data.append(copy.deepcopy(
+                    GQLOperations.DropCampaignDetails))
                 json_data[-1]["variables"] = {
                     "dropID": campaign["id"],
                     "channelLogin": f"{self.twitch_login.get_user_id()}",
@@ -783,7 +827,8 @@ class Twitch(object):
                         campaigns[i].sync_drops(
                             progress["timeBasedDrops"], self.claim_drop
                         )
-                        campaigns[i].clear_drops()  # Remove all the claimed drops
+                        # Remove all the claimed drops
+                        campaigns[i].clear_drops()
                         break
         return campaigns
 
@@ -793,7 +838,8 @@ class Twitch(object):
         )
 
         json_data = copy.deepcopy(GQLOperations.DropsPage_ClaimDropRewards)
-        json_data["variables"] = {"input": {"dropInstanceID": drop.drop_instance_id}}
+        json_data["variables"] = {
+            "input": {"dropInstanceID": drop.drop_instance_id}}
         response = self.post_gql_request(json_data)
         try:
             # response["data"]["claimDropRewards"] can be null and respose["data"]["errors"] != []
