@@ -59,13 +59,13 @@ class Twitch(object):
         "client_version",
         "twilight_build_id_pattern",
     ]
-    __catchSleep__ = 1
+    __catchSleep__ = 3
 
     def __init__(self, username, user_agent, password=None):
         cookies_path = os.path.join(Path().absolute(), "cookies")
         Path(cookies_path).mkdir(parents=True, exist_ok=True)
         global __catchSleep__
-        __catchSleep__ = 1
+        __catchSleep__ = 3
         self.cookies_file = os.path.join(cookies_path, f"{username}.pkl")
         self.user_agent = user_agent
         self.twitch_login = TwitchLogin(
@@ -527,7 +527,7 @@ class Twitch(object):
             for channelReward in channelCustomRewards:
                 # pprint(channelReward)
                 #pprint("Pokemon check!")
-                caughtList = ['Ivysaur', 'Venusaur', 'Charmander', 'Charizard', 'Caterpie', 'Metapod', 'Weedle', 'Pidgeotto', 'Fearow', 'Ekans', 'Arbok', 'Raichu', 'Nidoran♀', 'Nidorina', 'Nidoran♂', 'Nidorino', 'Clefairy', 'Vulpix', 'Jigglypuff', 'Wigglytuff', 'Zubat', 'Paras', 'Venonat', 'Venomoth', 'Dugtrio', 'Meowth', 'Psyduck', 'Primeape', 'Growlithe', 'Arcanine', 'Poliwrath', 'Abra', 'Alakazam', 'Machoke', 'Machamp', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Geodude', 'Doduo', 'Seel', 'Muk', 'Shellder', 'Cloyster', 'Gastly', 'Haunter', 'Gengar', 'Onix', 'Hypno', 'Krabby', 'Kingler', 'Voltorb', 'Exeggcute', 'Exeggutor', 'Cubone', 'Marowak', 'Hitmonlee', 'Hitmonchan', 'Lickitung', 'Weezing', 'Rhyhorn', 'Tangela', 'Kangaskhan', 'Horsea', 'Seadra', 'Seaking', 'Staryu', 'Starmie', 'Magmar', 'Pinsir', 'Tauros', 'Magikarp', 'Lapras', 'Ditto', 'Eevee', 'Vaporeon', 'Porygon', 'Omanyte', 'Kabutops', 'Moltres', 'Dratini', 'Dragonair', 'Bayleef', 'Meganium', 'Cyndaquil', 'Croconaw', 'Sentret', 'Noctowl', 'Ledyba', 'Spinarak', 'Chinchou', 'Lanturn', 'Pichu', 'Cleffa', 'Igglybuff', 'Xatu', 'Mareep', 'Flaaffy', 'Azumarill', 'Sudowoodo', 'Hoppip', 'Sunkern', 'Sunflora', 'Quagsire', 'Umbreon', 'Misdreavus', 'Unown', 'Wobbuffet', 'Girafarig', 'Forretress', 'Dunsparce', 'Snubbull', 'Granbull', 'Scizor', 'Shuckle', 'Heracross', 'Teddiursa', 'Slugma', 'Corsola', 'Mantine', 'Houndour', 'Houndoom', 'Phanpy', 'Donphan', 'Smeargle', 'Hitmontop', 'Smoochum', 'Elekid', 'Larvitar', 'Pupitar']
+                caughtList = ['Ivysaur', 'Venusaur', 'Charmander', 'Charizard', 'Caterpie', 'Metapod', 'Weedle', 'Pidgeotto', 'Fearow', 'Ekans', 'Arbok', 'Raichu', 'Nidoran♀', 'Nidorina', 'Nidoran♂', 'Nidorino', 'Clefairy', 'Vulpix', 'Jigglypuff', 'Wigglytuff', 'Zubat', 'Paras', 'Venonat', 'Venomoth', 'Dugtrio', 'Meowth', 'Psyduck', 'Primeape', 'Growlithe', 'Arcanine', 'Poliwrath', 'Abra', 'Alakazam', 'Machoke', 'Machamp', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Geodude', 'Doduo', 'Seel', 'Muk', 'Shellder', 'Cloyster', 'Gastly', 'Haunter', 'Gengar', 'Onix', 'Hypno', 'Krabby', 'Kingler', 'Voltorb', 'Exeggcute', 'Exeggutor', 'Cubone', 'Marowak', 'Hitmonlee', 'Hitmonchan', 'Lickitung', 'Weezing', 'Rhyhorn', 'Tangela', 'Kangaskhan', 'Horsea', 'Seadra', 'Seaking', 'Staryu', 'Starmie', 'Magmar', 'Pinsir', 'Tauros', 'Magikarp', 'Lapras', 'Ditto', 'Eevee', 'Vaporeon', 'Porygon', 'Omanyte', 'Kabutops', 'Moltres', 'Dratini', 'Dragonair', 'Bayleef', 'Meganium', 'Cyndaquil', 'Croconaw', 'Sentret', 'Noctowl', 'Ledyba', 'Spinarak', 'Chinchou', 'Lanturn', 'Pichu', 'Cleffa', 'Igglybuff', 'Xatu', 'Mareep', 'Flaaffy', 'Azumarill', 'Sudowoodo', 'Hoppip', 'Sunkern', 'Sunflora', 'Quagsire', 'Umbreon', 'Misdreavus', 'Unown', 'Wobbuffet', 'Girafarig', 'Forretress', 'Dunsparce', 'Snubbull', 'Granbull', 'Scizor', 'Shuckle', 'Heracross', 'Teddiursa', 'Slugma', 'Corsola', 'Mantine', 'Houndour', 'Houndoom', 'Phanpy', 'Donphan', 'Smeargle', 'Hitmontop', 'Smoochum', 'Elekid', 'Larvitar', 'Pupitar', 'Aerodactyl']
                 checkString = channelReward["title"]
 
                 if channelReward["title"].__contains__("Catch the") and channelReward["title"].__contains__("Pokémon!") and not (channelReward["title"].find(file) for file in caughtList):
